@@ -10,7 +10,11 @@ def create_view():
     """
     DB = psycopg2.connect("dbname=news")
     c = DB.cursor()
-    c.execute("CREATE VIEW articles_log AS(SELECT author, title, articles.id AS art_id, slug, path, log.id AS log_id FROM articles, log WHERE log.path LIKE '/article/' || articles.slug )")
+    c.execute("""CREATE VIEW articles_log AS
+                        (SELECT author, title, articles.id AS art_id, slug,
+                                        path, og.id AS log_id
+                        FROM articles, log
+                        WHERE log.path LIKE '/article/' || articles.slug )""")
     DB.commit()
     DB.close()
 
@@ -37,7 +41,11 @@ def question1():
     """Return the result for question 1;
     What are the most popular three articles of all time?
     """
-    query = """SELECT title, COUNT(*) AS views FROM articles_log GROUP BY title ORDER BY views DESC LIMIT 3"""
+    query = """SELECT title, COUNT(*) AS views
+                    FROM articles_log
+                    GROUP BY title
+                    ORDER BY views DESC
+                    LIMIT 3"""
     result = execute_query(query)
     solution = [('\"{}\" - {} views\n'.format(tup[0], tup[1]))
                 for tup in result]
@@ -48,7 +56,11 @@ def question2():
     """Return the result for question 2;
     Who are the most popular article authors of all time?
     """
-    query = """SELECT name, COUNT(*) AS views FROM articles_log, authors WHERE authors.id = articles_log.author GROUP BY name ORDER BY views DESC"""
+    query = """SELECT name, COUNT(*) AS views
+                    FROM articles_log, authors
+                    WHERE authors.id = articles_log.author
+                    GROUP BY name
+                    ORDER BY views DESC"""
     result = execute_query(query)
     solution = [('{} - {} views\n'.format(tup[0], tup[1]))
                 for tup in result]
@@ -59,10 +71,17 @@ def question3():
     """Return the result for question 3;
     On which days did more than 1% of requests lead to errors?
     """
-    query = """SELECT * FROM (SELECT log.time:: date AS day, ROUND(100.0 * (SUM(CASE WHEN status SIMILAR TO '(4|5)%' THEN 1 ELSE 0 END)) / COUNT(*), 1) AS errors FROM log GROUP BY day) AS errors_all WHERE errors > 1.0"""
+    query = """SELECT * FROM
+                                (SELECT log.time:: date AS day,
+                                            ROUND(100.0 * (SUM(CASE WHEN status
+                                            SIMILAR TO '(4|5)%' THEN 1 ELSE 0
+                                            END)) / COUNT(*), 1) AS errors
+                                FROM log GROUP BY day) AS errors_all
+                                WHERE errors > 1.0"""
     result = execute_query(query)
-    solution = [('{} - {}% errors\n'.format(tup[0].strftime("%B %d, %Y"), tup[1]))
-                for tup in result]
+    solution = [
+        ('{} - {}% errors\n'.format(tup[0].strftime("%B %d, %Y"), tup[1]))
+        for tup in result]
     return solution
 
 
