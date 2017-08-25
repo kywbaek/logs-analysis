@@ -46,7 +46,11 @@ def question3():
 def main():
     # use sys.argv to get the output file path
     # get solutions text and write/append them into text file.
-    create_view()
+    try:
+        create_view()
+    except:
+        print("using articles_log VIEW that already exists...")
+
     out_file_path = sys.argv[1]
     solutions = [question1(), question2(), question3()]
     for sol in solutions:
