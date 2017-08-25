@@ -51,7 +51,7 @@ def question2():
 def question3():
     query = """SELECT * FROM (SELECT log.time:: date AS day, ROUND(100.0 * (SUM(CASE WHEN status SIMILAR TO '(4|5)%' THEN 1 ELSE 0 END)) / COUNT(*), 1) AS errors FROM log GROUP BY day) AS errors_all WHERE errors > 1.0"""
     result = execute_query(query)
-    solution = [('{} - {}% errors\n'.format(tup[0], tup[1]))
+    solution = [('{} - {}% errors\n'.format(tup[0].strftime("%B %d, %Y"), tup[1]))
                 for tup in result]
     return solution
 
