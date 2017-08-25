@@ -7,7 +7,7 @@ import sys
 def create_view():
     DB = psycopg2.connect("dbname=news")
     c = DB.cursor()
-    c.execute("CREATE VIEW articles_log AS(SELECT author, title, articles.id AS art_id, slug, path, log.id AS log_id FROM articles, log WHERE log.path LIKE '/article/' | | articles.slug | | '%')")
+    c.execute("CREATE VIEW articles_log AS(SELECT author, title, articles.id AS art_id, slug, path, log.id AS log_id FROM articles, log WHERE log.path LIKE '/article/' || articles.slug )")
     DB.close()
 
 
