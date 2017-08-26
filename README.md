@@ -24,7 +24,7 @@ The program will run from the command line. It won't take any input from the use
 ## Approach :
 - Use Python module **psycopg2** to query a mock **PostgreSQL** database and fetch the results to be written in output file.
 
-- VIEW used - articles_log :
+- VIEW used - article_views :
 ```sql
 CREATE VIEW article_views AS
 SELECT articles.title, authors.name AS author, log.views
