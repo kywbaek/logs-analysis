@@ -10,11 +10,15 @@ def create_view():
     """
     DB = psycopg2.connect("dbname=news")
     c = DB.cursor()
-    c.execute("""CREATE VIEW articles_log AS
-                        SELECT author, title, articles.id AS art_id, slug,
-                                        path, og.id AS log_id
-                        FROM articles, log
-                        WHERE log.path LIKE '/article/' || articles.slug""")
+    c.execute("""CREATE VIEW article_views AS
+                    SELECT articles.title, authors.name as author, log.views
+                    FROM articles INNER JOIN
+                                                (SELECT path, count(*) as views
+                                                FROM log
+                                                GROUP BY path) AS log
+                                        ON '/article/' || articles.slug = log.path
+                                        LEFT JOIN authors
+                                        ON articles.author = authors.id""")
     DB.commit()
     DB.close()
 
@@ -41,9 +45,8 @@ def question1():
     """Return the result for question 1;
     What are the most popular three articles of all time?
     """
-    query = """SELECT title, COUNT(*) AS views
-                    FROM articles_log
-                    GROUP BY title
+    query = """SELECT title, views
+                    FROM article_views
                     ORDER BY views DESC
                     LIMIT 3"""
     result = execute_query(query)
@@ -56,10 +59,9 @@ def question2():
     """Return the result for question 2;
     Who are the most popular article authors of all time?
     """
-    query = """SELECT name, COUNT(*) AS views
-                    FROM articles_log, authors
-                    WHERE authors.id = articles_log.author
-                    GROUP BY name
+    query = """SELECT author, SUM(views) AS views
+                    FROM article_views
+                    GROUP BY author
                     ORDER BY views DESC"""
     result = execute_query(query)
     solution = [('{} - {} views\n'.format(tup[0], tup[1]))
