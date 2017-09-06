@@ -13,7 +13,7 @@ The program will run from the command line. It won't take any input from the use
 | Table | Descriptions | Columns |
 |--------|-----------------|------------|
 | **articles** | includes the articles | author, title, slug, lead, time, id |
-| **authors** | includes informationa about the authors of articles | name, bio, id |
+| **authors** | includes information about the authors of articles | name, bio, id |
 | **log** | includes one entry for each time a user has accessed the site | path, ip, method, status, time, id |
 
 ### Questions to answer :
