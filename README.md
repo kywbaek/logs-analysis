@@ -40,7 +40,7 @@ ON articles.author = authors.id;
 ## Usage :
 1. The virtual machine.
     - From the command line, navigate to the folder containing the Vagrantfile
-    - Power up the virtual machine by typing: `vagrant up` note: this may take a couple minutes to complete
+    - Power up the virtual machine by typing: `vagrant up` (note: this may take a couple minutes to complete)
     - Once the virtual machine is done booting, log into it by typing: `vagrant ssh`
 2. Setup the "news" database.
     - Download newsdata.zip file from [here](https://d17h27t6h515a5.cloudfront.net/topher/2016/August/57b5f748_newsdata/newsdata.zip)
