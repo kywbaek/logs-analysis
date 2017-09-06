@@ -48,4 +48,4 @@ ON articles.author = authors.id;
     - From the command line, type `psql -d news -f newsdata.sql`
 3.  The program.
     - From the command line, type `./run.sh`
-    - Check the solution from output.txt in output directory.
+    - Check the solution from output.txt in output directory
